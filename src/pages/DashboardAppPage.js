@@ -26,21 +26,21 @@ export default function DashboardAppPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard | Minimal UI </title>
+        <title> Livraria - FatecLibrary </title>
       </Helmet>
 
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+        <Typography variant="h4" sx={{ mb: 2 }}>
+          Bem-vindo, aqui estão os dados sobre as vendas:
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Vendas semanais" total={1200} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Novos cadastros" total={100} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
@@ -53,20 +53,20 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
-              title="Website Visits"
+              title="Visitas no site"
               subheader="(+43%) than last year"
               chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
+                '01/01/2023',
+                '02/01/2023',
+                '03/01/2023',
+                '04/01/2023',
+                '05/01/2023',
+                '06/01/2023',
+                '07/01/2023',
+                '08/01/2023',
+                '09/01/2023',
+                '10/01/2023',
+                '11/01/2023',
               ]}
               chartData={[
                 {

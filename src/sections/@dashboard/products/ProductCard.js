@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 // @mui
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { LoadingButton } from '@mui/lab';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 // components
@@ -72,6 +73,11 @@ export default function ShopProductCard({ product }) {
           </Typography>
         </Stack>
       </Stack>
+      <Box sx={{ p: 2 }}>
+        <LoadingButton fullWidth size="medium" type="submit" variant="contained" color='inherit'>
+          Comprar
+        </LoadingButton>
+      </Box>
     </Card>
   );
 }

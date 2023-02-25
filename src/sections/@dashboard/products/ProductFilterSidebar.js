@@ -23,29 +23,28 @@ import { ColorMultiPicker } from '../../../components/color-utils';
 // ----------------------------------------------------------------------
 
 export const SORT_BY_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' },
+  { value: 'destaque', label: 'Destaque' },
+  { value: 'lançcamento', label: 'Lançcamento' },
+  { value: 'caro', label: 'Valor: Alto' },
+  { value: 'barato', label: 'Valor: Baixo' },
 ];
-export const FILTER_GENDER_OPTIONS = ['Men', 'Women', 'Kids'];
-export const FILTER_CATEGORY_OPTIONS = ['All', 'Shose', 'Apparel', 'Accessories'];
+export const FILTER_CATEGORY_OPTIONS = ['Todos', 'Literatura', 'HQs', 'Estudo'];
 export const FILTER_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
 export const FILTER_PRICE_OPTIONS = [
-  { value: 'below', label: 'Below $25' },
-  { value: 'between', label: 'Between $25 - $75' },
-  { value: 'above', label: 'Above $75' },
+  { value: 'abaixo', label: 'Abaixo de $25' },
+  { value: 'entre', label: 'Entre $25 - $75' },
+  { value: 'acima', label: 'Acima $75' },
 ];
-export const FILTER_COLOR_OPTIONS = [
-  '#00AB55',
-  '#000000',
-  '#FFFFFF',
-  '#FFC0CB',
-  '#FF4842',
-  '#1890FF',
-  '#94D82D',
-  '#FFC107',
-];
+// export const FILTER_COLOR_OPTIONS = [
+//   '#00AB55',
+//   '#000000',
+//   '#FFFFFF',
+//   '#FFC0CB',
+//   '#FF4842',
+//   '#1890FF',
+//   '#94D82D',
+//   '#FFC107',
+// ];
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +58,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
   return (
     <>
       <Button disableRipple color="inherit" endIcon={<Iconify icon="ic:round-filter-list" />} onClick={onOpenFilter}>
-        Filters&nbsp;
+        Filtros&nbsp;
       </Button>
 
       <Drawer
@@ -72,7 +71,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 1, py: 2 }}>
           <Typography variant="subtitle1" sx={{ ml: 1 }}>
-            Filters
+            Filtros
           </Typography>
           <IconButton onClick={onCloseFilter}>
             <Iconify icon="eva:close-fill" />
@@ -83,7 +82,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
 
         <Scrollbar>
           <Stack spacing={3} sx={{ p: 3 }}>
-            <div>
+            {/* <div>
               <Typography variant="subtitle1" gutterBottom>
                 Gender
               </Typography>
@@ -92,11 +91,11 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
                   <FormControlLabel key={item} control={<Checkbox />} label={item} />
                 ))}
               </FormGroup>
-            </div>
+            </div> */}
 
             <div>
               <Typography variant="subtitle1" gutterBottom>
-                Category
+                Categoria
               </Typography>
               <RadioGroup>
                 {FILTER_CATEGORY_OPTIONS.map((item) => (
@@ -105,22 +104,22 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
               </RadioGroup>
             </div>
 
-            <div>
+            {/* <div>
               <Typography variant="subtitle1" gutterBottom>
                 Colors
               </Typography>
-              <ColorMultiPicker
+              {/* <ColorMultiPicker
                 name="colors"
                 selected={[]}
                 colors={FILTER_COLOR_OPTIONS}
                 onChangeColor={(color) => [].includes(color)}
                 sx={{ maxWidth: 38 * 4 }}
-              />
-            </div>
+              /> 
+            </div> */}
 
             <div>
               <Typography variant="subtitle1" gutterBottom>
-                Price
+                Valor
               </Typography>
               <RadioGroup>
                 {FILTER_PRICE_OPTIONS.map((item) => (
@@ -131,7 +130,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
 
             <div>
               <Typography variant="subtitle1" gutterBottom>
-                Rating
+                Avaliação
               </Typography>
               <RadioGroup>
                 {FILTER_RATING_OPTIONS.map((item, index) => (
@@ -149,7 +148,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
                         }}
                       />
                     }
-                    label="& Up"
+                    label="Estrelas"
                     sx={{
                       my: 0.5,
                       borderRadius: 1,
@@ -171,7 +170,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
             variant="outlined"
             startIcon={<Iconify icon="ic:round-clear-all" />}
           >
-            Clear All
+            Limpar tudo
           </Button>
         </Box>
       </Drawer>
