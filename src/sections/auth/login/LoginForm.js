@@ -16,8 +16,8 @@ export default function LoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
+  const [validationEmail, setValidationEmail] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,18 +25,37 @@ export default function LoginForm() {
     login(email, password);
   };
 
+  const emailInputError = <TextField
+    error
+    helperText="ex: email@email.com"
+    name="email"
+    label="E-mail inválido"
+    type="email"
+    value={email}
+    onChange={(e) => {
+      re.test(email) ? setValidationEmail(true) : setValidationEmail(false); // eslint-disable-line
+      return setEmail(e.target.value);
+    }}
+  />
+
+  const emailInput = <TextField
+    name="email"
+    label="E-mail"
+    type="email"
+    value={email}
+    onChange={(e) => {
+      re.test(email) ? setValidationEmail(true) : setValidationEmail(false); // eslint-disable-line
+      return setEmail(e.target.value);
+    }}
+  />
+
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
+
   return (
     <>
       <form onSubmit={handleSubmit}>
         <Stack spacing={3}>
-          <p>{authenticated}</p>
-          <TextField
-            name="email" 
-            label="E-mail" 
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            />
+          {validationEmail ? emailInput : emailInputError}
           <TextField
             value={password}
             onChange={(e) => setPassword(e.target.value)}

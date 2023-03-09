@@ -11,6 +11,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import { AuthProvider, AuthContext } from './sections/auth/context/auth';
+import CreatePage from './pages/CreateUser';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +40,8 @@ const AppRoutes = () => {
           <Route path="products" element={<ProductsPage />} />
           <Route path="blog" element={<BlogPage />} />
         </Route>
-        <Route path="login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/cadastrar" element={<CreatePage />} />
         <Route element={<SimpleLayout />}>
           <Route element={<Navigate to="/" index="true" />} />
           <Route path="404" element={<Page404 />} />
