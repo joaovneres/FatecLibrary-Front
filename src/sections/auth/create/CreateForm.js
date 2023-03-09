@@ -25,9 +25,9 @@ export default function CreateForm() {
 
     const nameInputError = <TextField
         error
-        helperText="Nome completo"
+        helperText="É necessário informar seu nome completo."
         name="name"
-        label="É necessário informar seu nome completo."
+        label="Nome"
         type="text"
         value={name}
         onChange={(e) => {
@@ -44,6 +44,43 @@ export default function CreateForm() {
         onChange={(e) => {
             name.trim().split(" ").length > 1 ? setValidationName(true) : setValidationName(false); // eslint-disable-line
             setName(e.target.value);
+        }}
+    />
+
+    // cpf
+    const [CPF, setCPF] = useState("");
+    const [validationCPF, setValidationCPF] = useState(true);
+
+    const maskCPF = (value) => {
+        return value
+            .replace(/\D/g, "")
+            .replace(/(\d{3})(\d)/, "$1.$2")
+            .replace(/(\d{3})(\d)/, "$1.$2")
+            .replace(/(\d{3})(\d{1,2})/, "$1-$2")
+            .replace(/(-\d{2})\d+?$/, "$1");
+    };
+
+    const CPFInputError = <TextField
+        error
+        helperText="É necessário informar um CPF."
+        name="CPF"
+        label="CPF"
+        type="text"
+        value={CPF}
+        onChange={(e) => {
+            setCPF(maskCPF(e.target.value));
+            CPF.trim().length === 13 ? setValidationCPF(true) : setValidationCPF(false); // eslint-disable-line
+        }}
+    />
+
+    const CPFInput = <TextField
+        name="CPF"
+        label="CPF"
+        type="text"
+        value={CPF}
+        onChange={(e) => {
+            setCPF(maskCPF(e.target.value));
+            CPF.trim().length === 13 ? setValidationCPF(true) : setValidationCPF(false); // eslint-disable-line
         }}
     />
 
@@ -68,7 +105,7 @@ export default function CreateForm() {
         value={tel}
         onChange={(e) => {
             setTel(maskPhone(e.target.value));
-            tel.trim().length === 15 ? setValidationTel(true) : setValidationTel(false);
+            tel.trim().length === 14 ? setValidationTel(true) : setValidationTel(false); // eslint-disable-line
         }}
     />
     const telInput = <TextField
@@ -78,7 +115,7 @@ export default function CreateForm() {
         value={maskPhone(tel)}
         onChange={(e) => {
             setTel(maskPhone(e.target.value));
-            tel.trim().length === 15 ? setValidationTel(true) : setValidationTel(false); // eslint-disable-line
+            tel.trim().length === 14 ? setValidationTel(true) : setValidationTel(false); // eslint-disable-line
         }}
     />
 
@@ -121,7 +158,8 @@ export default function CreateForm() {
             <form onSubmit={handleSubmit}>
                 <Stack spacing={3}>
                     {validationName ? nameInput : nameInputError}
-                    {tel.trim().length === 15 ? telInput : telInputError}
+                    {validationCPF ? CPFInput : CPFInputError}
+                    {validationTel ? telInput : telInputError}
                     {validationEmail ? emailInput : emailInputError}
                     <TextField
                         value={password}
