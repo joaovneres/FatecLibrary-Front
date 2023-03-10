@@ -23,6 +23,11 @@ export default function CreateForm() {
     const [name, setName] = useState("");
     const [validationName, setValidationName] = useState(true);
 
+    const validateName = (nameInput) => {
+        nameInput.trim().split(" ").length > 1 ? setValidationName(true) : setValidationName(false); // eslint-disable-line
+        setName(nameInput);
+    }
+
     const nameInputError = <TextField
         error
         helperText="É necessário informar seu nome completo."
@@ -30,10 +35,7 @@ export default function CreateForm() {
         label="Nome"
         type="text"
         value={name}
-        onChange={(e) => {
-            name.trim().split(" ").length > 1 ? setValidationName(true) : setValidationName(false); // eslint-disable-line
-            setName(e.target.value);
-        }}
+        onChange={(e) => validateName(e.target.value)}
     />
 
     const nameInput = <TextField
@@ -41,10 +43,7 @@ export default function CreateForm() {
         label="Nome"
         type="text"
         value={name}
-        onChange={(e) => {
-            name.trim().split(" ").length > 1 ? setValidationName(true) : setValidationName(false); // eslint-disable-line
-            setName(e.target.value);
-        }}
+        onChange={(e) => validateName(e.target.value)}
     />
 
     // cpf
@@ -60,6 +59,11 @@ export default function CreateForm() {
             .replace(/(-\d{2})\d+?$/, "$1");
     };
 
+    const validateCPF = (CPFInput) => {
+        CPF.length >= 13 ? setValidationCPF(true) : setValidationCPF(false); // eslint-disable-line
+        setCPF(maskCPF(CPFInput));
+    }
+
     const CPFInputError = <TextField
         error
         helperText="É necessário informar um CPF."
@@ -67,10 +71,7 @@ export default function CreateForm() {
         label="CPF"
         type="text"
         value={CPF}
-        onChange={(e) => {
-            setCPF(maskCPF(e.target.value));
-            CPF.trim().length === 13 ? setValidationCPF(true) : setValidationCPF(false); // eslint-disable-line
-        }}
+        onChange={(e) => validateCPF(e.target.value)}
     />
 
     const CPFInput = <TextField
@@ -78,10 +79,7 @@ export default function CreateForm() {
         label="CPF"
         type="text"
         value={CPF}
-        onChange={(e) => {
-            setCPF(maskCPF(e.target.value));
-            CPF.trim().length === 13 ? setValidationCPF(true) : setValidationCPF(false); // eslint-disable-line
-        }}
+        onChange={(e) => validateCPF(e.target.value)}
     />
 
     // telefone
@@ -96,6 +94,11 @@ export default function CreateForm() {
             .replace(/(-\d{4})(\d+?)$/, "$1");
     };
 
+    const validateTel = (telInput) => {
+        setTel(maskPhone(telInput.trim()));
+        tel.length >= 14 ? setValidationTel(true) : setValidationTel(false); // eslint-disable-line
+    }
+
     const telInputError = <TextField
         error
         helperText="É necessário informar o número completo no formato (DDD) 99999-9999."
@@ -103,20 +106,15 @@ export default function CreateForm() {
         label="Celular inválido"
         type="text"
         value={tel}
-        onChange={(e) => {
-            setTel(maskPhone(e.target.value));
-            tel.trim().length === 14 ? setValidationTel(true) : setValidationTel(false); // eslint-disable-line
-        }}
+        onChange={(e) => validateTel(e.target.value)}
     />
+
     const telInput = <TextField
         name="tel"
         label="Celular"
         type="text"
-        value={maskPhone(tel)}
-        onChange={(e) => {
-            setTel(maskPhone(e.target.value));
-            tel.trim().length === 14 ? setValidationTel(true) : setValidationTel(false); // eslint-disable-line
-        }}
+        value={tel}
+        onChange={(e) => validateTel(e.target.value)}
     />
 
 
@@ -124,6 +122,12 @@ export default function CreateForm() {
     const [email, setEmail] = useState("");
     const [validationEmail, setValidationEmail] = useState(true);
 
+    const validateEmail = (emailInput) => {
+        regexEmail.test(emailInput) ? setValidationEmail(true) : setValidationEmail(false); // eslint-disable-line
+        setEmail(emailInput);
+    }
+
+    const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
     const emailInputError = <TextField
         error
         helperText="ex: email@email.com"
@@ -131,10 +135,7 @@ export default function CreateForm() {
         label="E-mail inválido"
         type="email"
         value={email}
-        onChange={(e) => {
-            re.test(email) ? setValidationEmail(true) : setValidationEmail(false); // eslint-disable-line
-            setEmail(e.target.value);
-        }}
+        onChange={(e) => validateEmail(e.target.value)}
     />
 
     const emailInput = <TextField
@@ -142,16 +143,42 @@ export default function CreateForm() {
         label="E-mail"
         type="email"
         value={email}
-        onChange={(e) => {
-            re.test(email) ? setValidationEmail(true) : setValidationEmail(false); // eslint-disable-line
-            setEmail(e.target.value);
-        }}
+        onChange={(e) => validateEmail(e.target.value)}
     />
-
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
 
     // senha
     const [password, setPassword] = useState("");
+    const [validationPassword, setValidationPassword] = useState(true);
+
+    const passwordProps = {
+        endAdornment: (
+            <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+            </InputAdornment>
+        )
+    }
+
+    const passwordInputError = <TextField
+        error
+        helperText="É necessário informar uma senha."
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        name="password"
+        label="Senha"
+        type={showPassword ? 'text' : 'password'}
+        InputProps={passwordProps}
+    />
+
+    const passwordInput = <TextField
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        name="password"
+        label="Senha"
+        type={showPassword ? 'text' : 'password'}
+        InputProps={passwordProps}
+    />
 
     return (
         <>
@@ -161,22 +188,7 @@ export default function CreateForm() {
                     {validationCPF ? CPFInput : CPFInputError}
                     {validationTel ? telInput : telInputError}
                     {validationEmail ? emailInput : emailInputError}
-                    <TextField
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        name="password"
-                        label="Senha"
-                        type={showPassword ? 'text' : 'password'}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                        <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+                    {validationPassword ? passwordInput : passwordInputError}
                 </Stack>
                 <LoadingButton fullWidth size="large" type="submit" variant="contained">
                     Login
