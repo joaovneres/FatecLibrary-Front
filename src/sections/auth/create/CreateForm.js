@@ -82,6 +82,43 @@ export default function CreateForm() {
         onChange={(e) => validateCPF(e.target.value)}
     />
 
+    // data de nascimento
+    const [date, setDate] = useState("");
+    const [validationDate, setValidationDate] = useState(true);
+
+    const maskDate = (value) => {
+        return value
+            .replace(/\D/g, "")
+            .replace(/(\d{2})(\d)/, "$1/$2")
+            .replace(/(\d{2})(\d)/, "$1/$2")
+            .replace(/(\d{4})(\d+?)$/, "$1");
+    }
+
+    const validateDate = (dateInput) => {
+        setDate(maskDate(dateInput.trim()));
+        dateInput.length >= 10 ? setValidationDate(true) : setValidationDate(false) // eslint-disable-line
+    }
+
+    const dateInputError = <TextField
+        error
+        helperText="É necessário informar sua data de nascimento completa, no formato DD/MM/AAAA."
+        name="date"
+        label="Data de nascimento inválida"
+        type="text"
+        required
+        value={date}
+        onChange={(e) => validateDate(e.target.value)}
+    />
+
+    const dateInput = <TextField
+        name="date"
+        label="Data de nascimento"
+        type="text"
+        required
+        value={date}
+        onChange={(e) => validateDate(e.target.value)}
+    />
+
     // telefone
     const [tel, setTel] = useState("");
     const [validationTel, setValidationTel] = useState(true);
@@ -116,7 +153,6 @@ export default function CreateForm() {
         value={tel}
         onChange={(e) => validateTel(e.target.value)}
     />
-
 
     // email
     const [email, setEmail] = useState("");
@@ -186,12 +222,13 @@ export default function CreateForm() {
                 <Stack spacing={3}>
                     {validationName ? nameInput : nameInputError}
                     {validationCPF ? CPFInput : CPFInputError}
+                    {validationDate ? dateInput : dateInputError}
                     {validationTel ? telInput : telInputError}
                     {validationEmail ? emailInput : emailInputError}
                     {validationPassword ? passwordInput : passwordInputError}
                 </Stack>
                 <LoadingButton fullWidth size="large" type="submit" variant="contained">
-                    Login
+                    Cadastrar
                 </LoadingButton>
             </form>
         </>
