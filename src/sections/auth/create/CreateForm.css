@@ -1,0 +1,27 @@
+.requisitosSenha {
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between !important; 
+    border-radius: 1%;
+    margin-top: 0 !important;
+    margin-bottom: 2vh !important;
+}
+
+.requisitosSenha>.requisitoError {
+    margin: 0vh 0vw;
+    background-color: rgba(222, 158, 158, 0.77);
+    color: rgb(179, 2, 2);
+    margin-top: 1vh;
+    padding: 0.5vh 0.5vw;
+    border-radius: 12%;
+}
+
+.requisitosSenha>.requisitoSucces {
+    margin: 0vh 0vw;
+    background-color: rgba(158, 222, 158, 0.77);
+    color: rgb(0, 145, 34);
+    margin-top: 1vh;
+    padding: 0.5vh 0.5vw;
+    border-radius: 12%;
+}

@@ -9,6 +9,7 @@ import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
+import { useNavigate } from 'react-router-dom'; // eslint-disable-line
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,9 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
+
+  const navigate = useNavigate();
+
   const mdUp = useResponsive('up', 'md');
 
   return (
@@ -68,7 +72,7 @@ export default function LoginPage() {
 
             <Typography variant="body2" sx={{ mb: 5 }}>
               Não tem conta? {''}
-              <Link variant="subtitle2">Cadastrar</Link>
+              <Link variant="subtitle2" component="button" onClick={() => navigate("/cadastrar")}>Cadastrar</Link>
             </Typography>
 
             <Stack direction="row" spacing={2}>

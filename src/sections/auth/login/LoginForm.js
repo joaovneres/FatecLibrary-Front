@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Typography, FormControlLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
@@ -21,7 +21,7 @@ export default function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit", { email, password });
+    console.log("entrou1")
     login(email, password);
   };
 
@@ -75,7 +75,7 @@ export default function LoginForm() {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-          <Checkbox name="remember" label="Remember me" />
+          <FormControlLabel label="Manter conectado" size="small" control={<Checkbox name="remember" label="Remember me" />} />
           <Link variant="subtitle2" underline="hover">
             Esqueceu a senha?
           </Link>

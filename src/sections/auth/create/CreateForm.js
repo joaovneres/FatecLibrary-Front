@@ -1,24 +1,57 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, Box, Grid, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 import { AuthContext } from '../context/auth';
+// toastfy
+import { Slide, toast } from 'react-toastify'; // eslint-disable-line
+
+import './CreateForm.css'
 
 // ----------------------------------------------------------------------
 
 export default function CreateForm() {
 
     const [showPassword, setShowPassword] = useState(false);
-
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("submit", { email, password });
-    };
-
+        if (validationCPF &&
+            validationDate &&
+            validationEmail &&
+            validationName &&
+            validationPassword &&
+            validationTel) {
+            toast.success('Usuário cadastrado com sucesso.', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored',
+                transition: Slide,
+            });
+            navigate("/login")
+        } else {
+            toast.warning('Há campos inválidos no formulário, verifique.', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored',
+                transition: Slide,
+            });
+        }
+    }
     // nome
     const [name, setName] = useState("");
     const [validationName, setValidationName] = useState(true);
@@ -185,6 +218,50 @@ export default function CreateForm() {
     // senha
     const [password, setPassword] = useState("");
     const [validationPassword, setValidationPassword] = useState(true);
+    const [requisitoDigito, setRequisitoDigito] = useState(false);
+    const [requisitoMai, setRequisitoMai] = useState(false);
+    const [requisitoMin, setRequisitoMin] = useState(false);
+    const [requisitoNum, setRequisitoNum] = useState(false);
+
+    const validatePassword = (value) => {
+        setPassword(value.trim());
+        let countValidation = 0; // eslint-disable-line
+        let regexMai = /[A-Z]/; // eslint-disable-line
+        let regexMin = /[a-z]/; // eslint-disable-line
+        let regexNumber = /[0-9]/; // eslint-disable-line
+
+        if (regexNumber.test(value)) {
+            setRequisitoNum(true);
+            countValidation++; // eslint-disable-line
+        } else {
+            setRequisitoNum(false);
+        }
+
+        if (regexMai.test(value)) {
+            setRequisitoMai(true);
+            countValidation++; // eslint-disable-line
+        } else {
+            setRequisitoMai(false);
+        }
+
+        if (regexMin.test(value)) {
+            setRequisitoMin(true);
+            countValidation++; // eslint-disable-line
+        } else {
+            setRequisitoMin(false);
+        }
+
+        if (value.length > 7) {
+            setRequisitoDigito(true);
+            countValidation++; // eslint-disable-line
+        } else {
+            setRequisitoDigito(false);
+        }
+        if (countValidation === 4) {
+            return setValidationPassword(true);
+        }
+        return setValidationPassword(false);
+    }
 
     const passwordProps = {
         endAdornment: (
@@ -196,25 +273,38 @@ export default function CreateForm() {
         )
     }
 
-    const passwordInputError = <TextField
-        error
-        helperText="É necessário informar uma senha."
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        name="password"
-        label="Senha"
-        type={showPassword ? 'text' : 'password'}
-        InputProps={passwordProps}
-    />
+    const passwordInputError =
+        <>
+            <TextField
+                error
+                helperText="É necessário informar uma senha."
+                value={password}
+                onChange={(e) => validatePassword(e.target.value)}
+                name="password"
+                label="Senha"
+                type={showPassword ? 'text' : 'password'}
+                InputProps={passwordProps}
+            />
+            <Grid container xs={11} className="requisitosSenha">
+                <Typography variant='caption' className={`${requisitoDigito ? "requisitoSucces" : "requisitoError"}`}>No mínimo 8 dígitos</Typography>
+                <Typography variant='caption' className={`${requisitoMai ? "requisitoSucces" : "requisitoError"}`}>1 Letra maiúscula</Typography>
+                <Typography variant='caption' className={`${requisitoMin ? "requisitoSucces" : "requisitoError"}`}>1 Letra minúscula</Typography>
+                <Typography variant='caption' className={`${requisitoNum ? "requisitoSucces" : "requisitoError"}`}>1 Número</Typography>
+            </Grid>
+        </>
 
-    const passwordInput = <TextField
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        name="password"
-        label="Senha"
-        type={showPassword ? 'text' : 'password'}
-        InputProps={passwordProps}
-    />
+
+    const passwordInput =
+        <>
+            <TextField
+                value={password}
+                onChange={(e) => validatePassword(e.target.value)}
+                name="password"
+                label="Senha"
+                type={showPassword ? 'text' : 'password'}
+                InputProps={passwordProps}
+            />
+        </>
 
     return (
         <>
@@ -227,7 +317,7 @@ export default function CreateForm() {
                     {validationEmail ? emailInput : emailInputError}
                     {validationPassword ? passwordInput : passwordInputError}
                 </Stack>
-                <LoadingButton fullWidth size="large" type="submit" variant="contained">
+                <LoadingButton fullWidth size="large" type="submit" variant="contained" style={{ marginTop: "3vh" }}>
                     Cadastrar
                 </LoadingButton>
             </form>

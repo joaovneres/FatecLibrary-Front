@@ -10,11 +10,16 @@ import ScrollToTop from './components/scroll-to-top';
 // context
 import { AuthProvider } from './sections/auth/context/auth';
 
+// toastfy
+import { ToastContainer } from 'react-toastify'; // eslint-disable-line
+import 'react-toastify/dist/ReactToastify.css';
+
 // ----------------------------------------------------------------------
 
 export default function App() {
   return (
     <HelmetProvider>
+      <ToastContainer />
       <Router>
         <ThemeProvider>
           <ScrollToTop />

@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
         };
 
         if (password === account.password && email === account.email) {
+            console.log("entrou3")
             setUser({ loggedUser });
             localStorage.setItem("user", JSON.stringify(loggedUser));
             navigate("/dashboard/app");
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            autthenticated: !!user, user, loading, login, logout
+            authenticated: !!user, user, loading, login, logout
         }}>
             {children}
         </AuthContext.Provider>

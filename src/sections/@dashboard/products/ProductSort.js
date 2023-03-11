@@ -34,7 +34,7 @@ export default function ShopProductSort() {
       >
         Ordenar por:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          Lançcamento
+          Lançamento
         </Typography>
       </Button>
       <Menu

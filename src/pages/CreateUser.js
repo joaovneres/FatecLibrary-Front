@@ -28,13 +28,12 @@ const StyledSection = styled('div')(({ theme }) => ({
 }));
 
 const StyledContent = styled('div')(({ theme }) => ({
-    maxWidth: 480,
     margin: 'auto',
     minHeight: '100vh',
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    padding: theme.spacing(12, 0),
+    padding: theme.spacing(7, 0),
 }));
 
 // ----------------------------------------------------------------------
@@ -45,11 +44,10 @@ export default function CreatePage() {
     return (
         <>
             <Helmet>
-                <title> Login | Fatec Library </title>
+                <title> Cadastrar | Fatec Library </title>
             </Helmet>
 
             <StyledRoot>
-
                 {mdUp && (
                     <StyledSection>
                         <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>

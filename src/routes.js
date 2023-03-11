@@ -1,4 +1,4 @@
-import { Navigate, Routes, useRoutes, Route, BrowserRouter } from 'react-router-dom';
+import { Navigate, Routes, Route, BrowserRouter } from 'react-router-dom';
 import React, { useContext } from "react";
 // layouts
 import DashboardLayout from './layouts/dashboard';
@@ -13,6 +13,8 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import { AuthProvider, AuthContext } from './sections/auth/context/auth';
 import CreatePage from './pages/CreateUser';
 
+// toastfy
+import { Slide, toast } from 'react-toastify'; // eslint-disable-line
 // ----------------------------------------------------------------------
 
 const AppRoutes = () => {
@@ -23,7 +25,18 @@ const AppRoutes = () => {
       return <div className='loading'>Carregando ...</div>
     }
     if (!authenticated) {
-      return <Navigate to="/" />;
+      toast.warning('Você precisa estar logado para acessar essa página.', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+        transition: Slide,
+      });
+      return <Navigate to="/login" />;
     }
     return children;
   }
@@ -31,9 +44,9 @@ const AppRoutes = () => {
   return (
     <AuthProvider>
       <Routes>
-        <Route path='/' element={<LoginPage />} />
+        <Route path='/' element={<ProductsPage />} />
         <Route path='/home' element={<ProductsPage />} />
-        <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route path="/dashboard" element={<Private><DashboardLayout /></Private>}>
           <Route element={<Navigate to="/dashboard/app" />} />
           <Route path="app" element={<DashboardAppPage />} />
           <Route path="user" element={<UserPage />} />
