@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
@@ -36,12 +37,17 @@ export default function AccountPopover() {
     setOpen(null);
   };
 
-  const { logout } = useContext(AuthContext);
+  const { logout, authenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <>
       <IconButton
         onClick={handleOpen}
+        style={{
+          borderRadius: '13%',
+          padding: "4%"
+        }}
         sx={{
           p: 0,
           ...(open && {
@@ -50,7 +56,7 @@ export default function AccountPopover() {
               content: "''",
               width: '100%',
               height: '100%',
-              borderRadius: '50%',
+              borderRadius: '13%',
               position: 'absolute',
               bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
             },
@@ -58,6 +64,12 @@ export default function AccountPopover() {
         }}
       >
         <Avatar src={account.photoURL} alt="photoURL" />
+        <Box marginLeft={1}>
+          <Typography>
+            Olá, seja bem-vindo
+          </Typography>
+          {authenticated ? <Typography>{account.displayName} ▼ </Typography> : <Typography> Entre ou cadastre-se ▼ </Typography>}
+        </Box>
       </IconButton>
 
       <Popover
@@ -91,11 +103,17 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
+
+          <MenuItem key={"Pedidos"} onClick={() => navigate("/")}>
+            Pedidos
+          </MenuItem>
+          <MenuItem key={"Pedidos"} onClick={() => navigate("/")}>
+            Perfil
+          </MenuItem>
+          <MenuItem key={"Configurações"} onClick={() => navigate("/")}>
+            Configurações
+          </MenuItem>
+
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
