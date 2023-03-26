@@ -1,17 +1,19 @@
+import { useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Slide, toast } from 'react-toastify';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
-import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
 import { useNavigate } from 'react-router-dom'; // eslint-disable-line
 
 // ----------------------------------------------------------------------
+import { AuthContext } from '../sections/auth/context/auth'; // eslint-disable-line
 
 const StyledRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -42,10 +44,11 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
-
   const navigate = useNavigate();
 
   const mdUp = useResponsive('up', 'md');
+
+  const { loginGoogle } = useContext(AuthContext);
 
   return (
     <>
@@ -54,7 +57,6 @@ export default function LoginPage() {
       </Helmet>
 
       <StyledRoot>
-
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
@@ -72,11 +74,13 @@ export default function LoginPage() {
 
             <Typography variant="body2" sx={{ mb: 5 }}>
               Não tem conta? {''}
-              <Link variant="subtitle2" component="button" onClick={() => navigate("/cadastrar")}>Cadastrar</Link>
+              <Link variant="subtitle2" component="button" onClick={() => navigate('/cadastrar')}>
+                Cadastrar
+              </Link>
             </Typography>
 
             <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined">
+              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={() => loginGoogle()}>
                 <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
               </Button>
 
