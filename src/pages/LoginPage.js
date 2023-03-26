@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Slide, toast } from 'react-toastify';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';

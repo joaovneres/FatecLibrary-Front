@@ -6,6 +6,7 @@ import { Slide, toast } from 'react-toastify';
 
 export const AuthContext = createContext();
 
+// eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -48,14 +49,8 @@ export const AuthProvider = ({ children }) => {
         navigate('/dashboard/app');
       })
       .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+        console.log(errorMessage);
         toast.error('Dados inválidos.', {
           position: 'top-right',
           autoClose: 2000,

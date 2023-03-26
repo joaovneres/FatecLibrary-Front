@@ -1,9 +1,7 @@
 import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox, FormControlLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { Slide, toast } from 'react-toastify';
 // components
 import Iconify from '../../../components/iconify';
 import { AuthContext } from '../context/auth';
