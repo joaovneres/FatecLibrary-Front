@@ -6,10 +6,6 @@ Projeto desenvolvido para a matéria de Projeto de Prototipagem e Testes de Usab
 
 ReactJS, JavaScript, Firebase, NodeJS.
 
-## License
+## Contato
 
-Distributed under the MIT License. See [LICENSE](https://github.com/minimal-ui-kit/minimal.free/blob/main/LICENSE.md) for more information.
-
-## Contact us
-
-Email Us: support@minimals.cc
+Email: victorsousa247@gmail.com
