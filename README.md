@@ -7,7 +7,7 @@ Projeto desenvolvido para a matéria de Projeto de Prototipagem e Testes de Usab
 ReactJS;
 JavaScript;
 Firebase;
-NodeJS
+NodeJS.
 
 ## License
 
