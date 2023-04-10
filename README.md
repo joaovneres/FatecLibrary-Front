@@ -4,10 +4,7 @@ Projeto desenvolvido para a matéria de Projeto de Prototipagem e Testes de Usab
 
 ## Tecnologias
 
-ReactJS;
-JavaScript;
-Firebase;
-NodeJS.
+ReactJS, JavaScript, Firebase, NodeJS.
 
 ## License
 
