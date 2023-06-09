@@ -1,12 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'; // eslint-disable-line
-import { provider } from 'src/service/connectionFirebase'; // eslint-disable-line
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { Slide, toast } from 'react-toastify';
+import { provider } from '../../../service/connectionFirebase';
 
 export const AuthContext = createContext();
 
-// eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -102,11 +101,21 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = () => {
-    console.log('saiu');
     setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    navigate('/');
+    toast.success('Saiu com sucesso.', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+      transition: Slide,
+    });
+    navigate('/login');
   };
 
   return (

@@ -11,7 +11,7 @@ import ScrollToTop from './components/scroll-to-top';
 import { AuthProvider } from './sections/auth/context/auth';
 
 // toastfy
-import { ToastContainer } from 'react-toastify'; // eslint-disable-line
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // ----------------------------------------------------------------------

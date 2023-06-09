@@ -9,10 +9,10 @@ import useResponsive from '../hooks/useResponsive';
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
-import { useNavigate } from 'react-router-dom'; // eslint-disable-line
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
-import { AuthContext } from '../sections/auth/context/auth'; // eslint-disable-line
+import { AuthContext } from '../sections/auth/context/auth';
 
 const StyledRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {

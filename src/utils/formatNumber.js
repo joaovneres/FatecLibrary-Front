@@ -7,8 +7,7 @@ export function fNumber(number) {
 }
 
 export function fCurrency(number) {
-  const format = number ? "R" + numeral(number).format('$0,0.00') : '';  // eslint-disable-line
-
+  const format = number ? 'R' + numeral(number).format('$0,0.00') : '';
   return result(format, '.00');
 }
 

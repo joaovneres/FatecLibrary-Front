@@ -25,7 +25,7 @@ export default function LoginForm() {
       type="email"
       value={email}
       onChange={(e) => {
-        re.test(e.target.value) ? setValidationEmail(true) : setValidationEmail(false); // eslint-disable-line
+        re.test(e.target.value) ? setValidationEmail(true) : setValidationEmail(false);
         return setEmail(e.target.value);
       }}
     />
@@ -38,14 +38,14 @@ export default function LoginForm() {
       type="email"
       value={email}
       onChange={(e) => {
-        re.test(e.target.value) ? setValidationEmail(true) : setValidationEmail(false); // eslint-disable-line
+        re.test(e.target.value) ? setValidationEmail(true) : setValidationEmail(false);
         return setEmail(e.target.value);
       }}
     />
   );
 
   const re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   return (
     <>

@@ -7,8 +7,8 @@ import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 // toastfy
-import { Slide, toast } from 'react-toastify'; // eslint-disable-line
-import apiConf from '../../../api-conf.json';
+import { Slide, toast } from 'react-toastify';
+import apiConf from '../../../service/api-conf.json';
 import './CreateForm.css';
 // ----------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ export default function CreateForm() {
   const [validationName, setValidationName] = useState(true);
 
   const validateName = (nameInput) => {
-    nameInput.trim().split(' ').length > 1 ? setValidationName(true) : setValidationName(false); // eslint-disable-line
+    nameInput.trim().split(' ').length > 1 ? setValidationName(true) : setValidationName(false);
     setName(nameInput);
   };
 
@@ -94,7 +94,7 @@ export default function CreateForm() {
   };
 
   const validateCPF = (CPFInput) => {
-    CPF.length >= 13 ? setValidationCPF(true) : setValidationCPF(false); // eslint-disable-line
+    CPF.length >= 13 ? setValidationCPF(true) : setValidationCPF(false);
     setCPF(maskCPF(CPFInput));
   };
 
@@ -148,7 +148,7 @@ export default function CreateForm() {
       label="Data de nascimento inválida"
       type="text"
       value={date}
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       onChange={(e) => validateDate(e.target.value)}
     />
   );
@@ -159,7 +159,7 @@ export default function CreateForm() {
       name="date"
       label="Data de nascimento"
       type="text"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={date}
       onChange={(e) => validateDate(e.target.value)}
     />
@@ -179,7 +179,7 @@ export default function CreateForm() {
 
   const validateTel = (telInput) => {
     setTel(maskPhone(telInput.trim()));
-    tel.length >= 14 ? setValidationTel(true) : setValidationTel(false); // eslint-disable-line
+    tel.length >= 14 ? setValidationTel(true) : setValidationTel(false);
   };
 
   const telInputError = (
@@ -190,7 +190,7 @@ export default function CreateForm() {
       name="tel"
       label="Celular inválido"
       type="text"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={tel}
       onChange={(e) => validateTel(e.target.value)}
     />
@@ -202,7 +202,7 @@ export default function CreateForm() {
       name="tel"
       label="Celular"
       type="text"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={tel}
       onChange={(e) => validateTel(e.target.value)}
     />
@@ -213,12 +213,12 @@ export default function CreateForm() {
   const [validationEmail, setValidationEmail] = useState(true);
 
   const validateEmail = (emailInput) => {
-    regexEmail.test(emailInput) ? setValidationEmail(true) : setValidationEmail(false); // eslint-disable-line
+    regexEmail.test(emailInput) ? setValidationEmail(true) : setValidationEmail(false);
     setEmail(emailInput);
   };
 
   const regexEmail =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const emailInputError = (
     <TextField
@@ -254,35 +254,35 @@ export default function CreateForm() {
 
   const validatePassword = (value) => {
     setPassword(value.trim());
-    let countValidation = 0; // eslint-disable-line
-    let regexMai = /[A-Z]/; // eslint-disable-line
-    let regexMin = /[a-z]/; // eslint-disable-line
-    let regexNumber = /[0-9]/; // eslint-disable-line
+    let countValidation = 0;
+    let regexMai = /[A-Z]/;
+    let regexMin = /[a-z]/;
+    let regexNumber = /[0-9]/;
 
     if (regexNumber.test(value)) {
       setRequisitoNum(true);
-      countValidation++; // eslint-disable-line
+      countValidation++;
     } else {
       setRequisitoNum(false);
     }
 
     if (regexMai.test(value)) {
       setRequisitoMai(true);
-      countValidation++; // eslint-disable-line
+      countValidation++;
     } else {
       setRequisitoMai(false);
     }
 
     if (regexMin.test(value)) {
       setRequisitoMin(true);
-      countValidation++; // eslint-disable-line
+      countValidation++;
     } else {
       setRequisitoMin(false);
     }
 
     if (value.length > 7) {
       setRequisitoDigito(true);
-      countValidation++; // eslint-disable-line
+      countValidation++;
     } else {
       setRequisitoDigito(false);
     }
@@ -398,7 +398,7 @@ export default function CreateForm() {
       label="CEP inválido"
       type="text"
       id="cep"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={cep}
       onChange={(e) => {
         setCep(maskCEP(e.target.value));
@@ -416,7 +416,7 @@ export default function CreateForm() {
       label="CEP"
       type="text"
       id="cep"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={cep}
       onChange={(e) => {
         setCep(maskCEP(e.target.value));
@@ -451,7 +451,7 @@ export default function CreateForm() {
       label="Logradouro inválido"
       type="text"
       id="addressAddress"
-      style={{width: "65%"}}
+      style={{ width: '65%' }}
       value={address.logradouro}
       onChange={(e) => validarEndereco(e.target.value)}
     />
@@ -465,7 +465,7 @@ export default function CreateForm() {
       type="text"
       id="addressAddress"
       inputProps={{ readOnly: addressDisable }}
-      style={{width: "65%"}}
+      style={{ width: '65%' }}
       value={address.logradouro}
       onChange={(e) => validarEndereco(e.target.value)}
     />
@@ -506,7 +506,7 @@ export default function CreateForm() {
       label="Número"
       type="text"
       id="addressNumber"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={address.number}
       onChange={(e) => validarNumero(e.target.value)}
     />
@@ -536,7 +536,7 @@ export default function CreateForm() {
       label="Cidade inválida"
       type="text"
       id="addressCity"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={address.localidade}
       onChange={(e) => validarCidade(e.target.value)}
     />
@@ -549,7 +549,7 @@ export default function CreateForm() {
       label="Cidade"
       type="text"
       id="addressCity"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       inputProps={{ readOnly: cityDisable }}
       value={address.localidade}
       onChange={(e) => validarNumero(e.target.value)}
@@ -580,7 +580,7 @@ export default function CreateForm() {
       label="Bairro inválido"
       type="text"
       id="addressNeighborhood"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={address.bairro}
       onChange={(e) => validarBairro(e.target.value)}
     />
@@ -593,7 +593,7 @@ export default function CreateForm() {
       label="Bairro"
       type="text"
       id="addressNeighborhood"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       inputProps={{ readOnly: bairroDisable }}
       value={address.bairro}
       onChange={(e) => validarBairro(e.target.value)}
@@ -624,7 +624,7 @@ export default function CreateForm() {
       label="Estado inválido"
       type="text"
       id="addressUf"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={address.uf}
       onChange={(e) => validarUf(e.target.value)}
     />
@@ -637,7 +637,7 @@ export default function CreateForm() {
       label="Estado"
       type="text"
       id="addressUf"
-      style={{width: "31%"}}
+      style={{ width: '31%' }}
       value={address.uf}
       inputProps={{ readOnly: ufDisable }}
       onChange={(e) => validarUf(e.target.value)}
@@ -680,16 +680,16 @@ export default function CreateForm() {
           <Stack spacing={2} direction={'row'}>
             {validationDate ? dateInput : dateInputError}
             {validationTel ? telInput : telInputError}
-          {validationCep ? cepInput : cepInputError}
+            {validationCep ? cepInput : cepInputError}
           </Stack>
           <Stack spacing={2} direction={'row'}>
-          {validationAddress ? addressInput : addressInputError}
-          {validationNumber ? numberInput : numberInputError}
+            {validationAddress ? addressInput : addressInputError}
+            {validationNumber ? numberInput : numberInputError}
           </Stack>
           <Stack spacing={2} direction={'row'}>
-          {validationBairro ? bairroInput : bairroInputError}
-          {validationCity ? cityInput : cityInputError}
-          {validationUf ? ufInput : ufInputError}
+            {validationBairro ? bairroInput : bairroInputError}
+            {validationCity ? cityInput : cityInputError}
+            {validationUf ? ufInput : ufInputError}
           </Stack>
           {validationEmail ? emailInput : emailInputError}
           {validationPassword ? passwordInput : passwordInputError}
