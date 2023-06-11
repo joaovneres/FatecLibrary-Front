@@ -8,14 +8,60 @@ import { Grid, Container, Typography } from '@mui/material';
 import { AppTasks, AppCurrentVisits, AppWidgetSummary } from '../sections/@dashboard/app';
 import { useEffect, useState } from 'react';
 import { find } from '../service/connectionAPI';
+import { firebase } from '../service/connectionFirebase';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
 
-  const [books, setBooks] = useState([])
+  const [books, setBooks] = useState([]);
+  const [publishers, setPublishers] = useState([]);
 
+  // Utilizar o firebase
+  useEffect(() => {
+    const search = async () => {
+      const snapshot = await firebase.firestore().collection('book').get();
+      const data = [];
+      snapshot.forEach((doc) => {
+        const { edition, imageURL, price, publicationYear, publishing, title } = doc.data();
+        data.push({
+          key: doc.id,
+          doc,
+          edition,
+          imageURL,
+          price,
+          publicationYear,
+          publishing,
+          title,
+        });
+      });
+      console.log(data);
+      setBooks(data.reverse());
+    };
+    search();
+  }, []);
+
+  useEffect(() => {
+    const search = async () => {
+      const snapshot = await firebase.firestore().collection('publishing').get();
+      const data = [];
+      snapshot.forEach((doc) => {
+        const { acronym, name } = doc.data();
+        data.push({
+          key: doc.id,
+          doc,
+          acronym,
+          name,
+        });
+      });
+      console.log(data);
+      setBooks(data.reverse());
+    };
+    search();
+  }, []);
+
+  // Utilizar a API
   // async function findAll() {
   //   await find('Book', setBooks);
   // }
@@ -37,7 +83,12 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Livros cadastrados" total={books.length} color="info" icon={'ant-design:book-outlined'} />
+            <AppWidgetSummary
+              title="Livros cadastrados"
+              total={books.length}
+              color="info"
+              icon={'ant-design:book-outlined'}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>

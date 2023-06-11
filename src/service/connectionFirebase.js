@@ -1,10 +1,9 @@
 // biblioteca do firebase
 import { GoogleAuthProvider } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
-// autenticação de email e senha
 import 'firebase/compat/auth';
-// trabalha com o banco de dados cirado no firebase
 import 'firebase/compat/database';
+import 'firebase/compat/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
