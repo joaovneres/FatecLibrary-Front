@@ -52,7 +52,7 @@ export default function UserListHead({
         {headLabel.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.alignRight ? 'right' : 'left'}
+            align={headCell.align}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -68,6 +68,7 @@ export default function UserListHead({
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell key={'actions'} align={'center'}>Ações</TableCell>
       </TableRow>
     </TableHead>
   );

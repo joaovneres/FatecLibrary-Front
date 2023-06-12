@@ -5,18 +5,11 @@ import { sample } from 'lodash';
 
 const PRODUCT_NAME = [
   'Vade Mecum Saraiva - Tradicional - 34ª edição 2022',
-  'É assim que acaba',
   'VADE MECUM COMPACTO - 25A EDIÇÃO 2022',
-  'O homem mais rico da Babilônia',
   'Mindset A nova psicologia do sucesso',
-  'A Seleção',
-  'Todas as suas (im)perfeições',
   'Mais esperto que o Diabo O mistério revelado da liberdade e do sucesso',
   'Mulheres que correm com os lobos Mitos e histórias do arquétipo da Mulher Selvagem',
   'A hipótese do amor (Sucesso do TikTok)',
-  'Os sete maridos de Evelyn Hugo',
-  'O diário perdido de Gravity falls',
-  'Box - o Essencial Sherlock Holmes - 3 Volumes',
   'Box Jane Austen - 3 Volumes - Emma, Mansfield Park e Abadia De Northanger - Capa Brochura',
   'Do mil ao milhão',
   'Especialista em pessoas Soluções bíblicas e inteligentes para lidar com todo tipo de gente',
@@ -27,7 +20,6 @@ const PRODUCT_NAME = [
   'Harry Potter e o Prisioneiro de Azkaban',
   'Sapiens (Nova edição) Uma breve história da humanidade',
   'O príncipe cruel (Vol. 1 O Povo do Ar)',
-  'Box Sherlock Holmes - 4 Livros',
 ];
 const PRODUCT_PRICE = [
   '168.75',

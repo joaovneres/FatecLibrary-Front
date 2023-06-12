@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 //
-import UserPage from './pages/UserPage';
+import BookPage from './pages/BookPage';
 import LoginPage from './pages/LoginPage';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
@@ -12,6 +12,7 @@ import CreatePage from './pages/CreateUser';
 
 // toastfy
 import { Slide, toast } from 'react-toastify';
+import PublishingPage from './pages/PublishingPage';
 // ----------------------------------------------------------------------
 
 const AppRoutes = () => {
@@ -20,7 +21,7 @@ const AppRoutes = () => {
     if (loading) {
       return <div className="loading">Carregando ...</div>;
     }
-    if (!authenticated && !["/", "/home", "/login", "/cadastrar"].includes(window.location.pathname)) {
+    if (!authenticated && !['/', '/home', '/login', '/cadastrar'].includes(window.location.pathname)) {
       toast.warning('Você precisa estar logado para acessar essa página.', {
         position: 'top-right',
         autoClose: 2000,
@@ -40,8 +41,7 @@ const AppRoutes = () => {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<ProductsPage />} />
-        <Route path="/home" element={<ProductsPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cadastrar" element={<CreatePage />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
@@ -55,7 +55,8 @@ const AppRoutes = () => {
         >
           <Route element={<Navigate to="/dashboard/app" />} />
           <Route path="app" element={<DashboardAppPage />} />
-          <Route path="user" element={<UserPage />} />
+          <Route path="books" element={<BookPage />} />
+          <Route path="publishers" element={<PublishingPage />} />
           <Route path="products" element={<ProductsPage />} />
         </Route>
       </Routes>

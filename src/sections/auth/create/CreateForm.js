@@ -369,7 +369,6 @@ export default function CreateForm() {
       number: '',
     };
     axios.get(`${apiConf.baseURL}${cepValue.replace(/-/g, '').slice(0, 8)}/json/`).then((response) => {
-      console.log(response.data);
       objResponse.cep = response.data.cep;
       objResponse.bairro = response.data.bairro;
       objResponse.localidade = response.data.localidade;
