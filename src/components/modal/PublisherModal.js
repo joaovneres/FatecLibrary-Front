@@ -37,6 +37,11 @@ const PublisherModal = ({ open, onClose, onAddPublisher, onUpdatePublisher, publ
         alignItems: 'center',
         justifyContent: 'center',
       }}
+      BackdropProps={{
+        style: {
+          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        },
+      }}
     >
       <div
         style={{

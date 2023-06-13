@@ -235,7 +235,7 @@ export default function PublishingPage() {
 
                         <TableCell align="left">{acronym}</TableCell>
 
-                        <TableCell align="center">{booksDTO !== null ? countOccurrences(id) : 0}</TableCell>
+                        <TableCell align="center">{countOccurrences(id)}</TableCell>
 
                         <TableCell
                           align="center"

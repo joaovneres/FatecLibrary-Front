@@ -64,6 +64,11 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}
+      BackdropProps={{
+        style: {
+          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        },
+      }}
     >
       <div
         style={{

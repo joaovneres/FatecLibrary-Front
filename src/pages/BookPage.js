@@ -32,10 +32,10 @@ import BookModal from '../components/modal/BookModal';
 
 const TABLE_HEAD = [
   { id: 'title', label: 'Nome', align: 'left' },
-  { id: 'price', label: 'Preço', align: 'left' },
-  { id: 'publicationYear', label: 'Ano de publicação', align: 'left' },
-  { id: 'edition', label: 'Edição', align: 'left' },
-  { id: 'publishingName', label: 'Editora', align: 'left' },
+  { id: 'price', label: 'Preço', align: 'center' },
+  { id: 'publicationYear', label: 'Ano de publicação', align: 'center' },
+  { id: 'edition', label: 'Edição', align: 'center' },
+  { id: 'publishingName', label: 'Editora', align: 'center' },
 ];
 
 // ----------------------------------------------------------------------
@@ -64,13 +64,13 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.title.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function PublishingPage() {
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const [page, setPage] = useState(0);
 
@@ -231,12 +231,16 @@ export default function PublishingPage() {
                             </Typography>
                           </Stack>
                         </TableCell>
-
-                        <TableCell align="left">{name}</TableCell>
-
-                        <TableCell align="left">{acronym}</TableCell>
-
-                        <TableCell align="center">{booksDTO !== null ? booksDTO.length : 0}</TableCell>
+                        <TableCell align="center">R${price}</TableCell>
+                        <TableCell align="center">{publicationYear}</TableCell>
+                        <TableCell align="center">{edition}</TableCell>
+                        <TableCell align="center">
+                          {publishers.map((publishing) => {
+                            if (publishingId == publishing.id) {
+                              return publishing.name;
+                            }
+                          })}
+                        </TableCell>
 
                         <TableCell
                           align="center"
@@ -282,9 +286,8 @@ export default function PublishingPage() {
                           </Typography>
 
                           <Typography variant="body2">
-                            No results found for &nbsp;
+                            Nenhum resultado para &nbsp;
                             <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
                           </Typography>
                         </Paper>
                       </TableCell>
