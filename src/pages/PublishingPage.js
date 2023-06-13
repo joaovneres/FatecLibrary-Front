@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 // @mui
 import {
@@ -8,9 +7,7 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
   Button,
-  Popover,
   Checkbox,
   TableRow,
   MenuItem,
@@ -18,19 +15,16 @@ import {
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
   TablePagination,
 } from '@mui/material';
 // components
-import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
-import USERLIST from '../_mock/user';
 import { find } from '../service/connectionAPI';
+import PublisherModal from '../components/modal/PublisherModal';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +66,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function PublishingPage() {
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const [page, setPage] = useState(0);
 
@@ -88,22 +82,57 @@ export default function PublishingPage() {
 
   const [publishers, setPublishers] = useState([]);
 
+  const [books, setBooks] = useState([]);
+
+  function countOccurrences(id) {
+    let count = 0;
+
+    books.map((book) => {
+      if (book.publishingId === id) {
+        count++;
+      }
+    });
+
+    return count;
+  }
+
   //  Utilizar a API
-  async function findAll() {
+  async function findBooks() {
+    await find('Book', setBooks);
+  }
+
+  async function findPublishers() {
     await find('Publishing', setPublishers);
-    console.log(publishers);
   }
 
   useEffect(() => {
-    findAll();
+    findBooks();
+    findPublishers();
+  }, [books.length]);
+
+  useEffect(() => {
+    findBooks();
+    findPublishers();
   }, [publishers.length]);
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
+  const handleOpenModal = () => {
+    setOpen(true);
   };
 
-  const handleCloseMenu = () => {
-    setOpen(null);
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
+  const handleAddPublisher = (newPublisher) => {
+    // Lógica para adicionar a nova editora (chamada de API, etc.)
+    console.log(newPublisher);
+    handleCloseModal();
+  };
+
+  const handleUpdatePublisher = (newPublisher) => {
+    // Lógica para adicionar a nova editora (chamada de API, etc.)
+    console.log(newPublisher);
+    handleCloseModal();
   };
 
   const handleRequestSort = (event, property) => {
@@ -167,13 +196,18 @@ export default function PublishingPage() {
           <Typography variant="h4" gutterBottom>
             Editoras
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenModal}>
             Nova Editora
           </Button>
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+            type="editora"
+          />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -201,17 +235,22 @@ export default function PublishingPage() {
 
                         <TableCell align="left">{acronym}</TableCell>
 
-                        <TableCell align="center">{booksDTO !== null ? booksDTO.length : 0}</TableCell>
+                        <TableCell align="center">{booksDTO !== null ? countOccurrences(id) : 0}</TableCell>
 
                         <TableCell
                           align="center"
                           sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}
                         >
-                          <MenuItem>
+                          <MenuItem onClick={handleOpenModal}>
                             <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
                             Editar
                           </MenuItem>
-
+                          <PublisherModal
+                            open={open}
+                            onClose={handleCloseModal}
+                            onUpdatePublisher={handleUpdatePublisher}
+                            publisher={row}
+                          />
                           <MenuItem sx={{ color: 'error.main' }}>
                             <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
                             Deletar
@@ -237,7 +276,7 @@ export default function PublishingPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            Não encontrado
                           </Typography>
 
                           <Typography variant="body2">
@@ -265,6 +304,7 @@ export default function PublishingPage() {
           />
         </Card>
       </Container>
+      <PublisherModal open={open} onClose={handleCloseModal} onAddPublisher={handleAddPublisher} />
     </>
   );
 }

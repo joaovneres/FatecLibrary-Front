@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import {
   Card,
@@ -10,7 +9,6 @@ import {
   Paper,
   Avatar,
   Button,
-  Popover,
   Checkbox,
   TableRow,
   MenuItem,
@@ -18,28 +16,26 @@ import {
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
   TablePagination,
 } from '@mui/material';
 // components
-import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
-import USERLIST from '../_mock/user';
+
+import { find } from '../service/connectionAPI';
+import BookModal from '../components/modal/BookModal';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Nome', alignRight: false },
-  { id: 'company', label: 'Estado', alignRight: false },
-  { id: 'role', label: 'Permissão', alignRight: false },
-  { id: 'isVerified', label: 'Verificado', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'title', label: 'Nome', align: 'left' },
+  { id: 'price', label: 'Preço', align: 'left' },
+  { id: 'publicationYear', label: 'Ano de publicação', align: 'left' },
+  { id: 'edition', label: 'Edição', align: 'left' },
+  { id: 'publishingName', label: 'Editora', align: 'left' },
 ];
 
 // ----------------------------------------------------------------------
@@ -73,7 +69,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function BookPage() {
+export default function PublishingPage() {
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -88,12 +84,47 @@ export default function BookPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
+  const [publishers, setPublishers] = useState([]);
+
+  const [books, setBooks] = useState([]);
+
+  //  Utilizar a API
+  async function findBooks() {
+    await find('Book', setBooks);
+  }
+
+  async function findPublishers() {
+    await find('Publishing', setPublishers);
+  }
+
+  useEffect(() => {
+    findBooks();
+    findPublishers();
+  }, [books.length]);
+
+  useEffect(() => {
+    findBooks();
+    findPublishers();
+  }, [publishers.length]);
+
+  const handleOpenModal = () => {
+    setOpen(true);
   };
 
-  const handleCloseMenu = () => {
-    setOpen(null);
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
+  const handleAddBook = (newBook) => {
+    // Lógica para adicionar a nova editora (chamada de API, etc.)
+    console.log(newBook);
+    handleCloseModal();
+  };
+
+  const handleUpdateBook = (newBook) => {
+    // Lógica para adicionar a nova editora (chamada de API, etc.)
+    console.log(newBook);
+    handleCloseModal();
   };
 
   const handleRequestSort = (event, property) => {
@@ -104,7 +135,7 @@ export default function BookPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = books.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -140,30 +171,35 @@ export default function BookPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - books.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(books, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> Livros </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Usuários
+            Livros
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            Novo usuário
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenModal}>
+            Novo Livro
           </Button>
         </Stack>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+            type="livro"
+          />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -172,45 +208,55 @@ export default function BookPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={books.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
-
+                    const { id, title, price, publicationYear, edition, imageURL, publishingId, publishingName } = row;
+                    const selectedUser = selected.indexOf(title) !== -1;
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, title)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt={title} src={imageURL} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {title}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="left">{name}</TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+                        <TableCell align="left">{acronym}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Sim' : 'Não'}</TableCell>
+                        <TableCell align="center">{booksDTO !== null ? booksDTO.length : 0}</TableCell>
 
-                        <TableCell align="left">
-                          <Label color={(status === 'banido' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}
+                        >
+                          <MenuItem onClick={handleOpenModal}>
+                            <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+                            Editar
+                          </MenuItem>
+                          <BookModal
+                            open={open}
+                            onClose={handleCloseModal}
+                            onUpdateBook={handleUpdateBook}
+                            book={row}
+                          />
 
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
+                          <MenuItem sx={{ color: 'error.main' }}>
+                            <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+                            Deletar
+                          </MenuItem>
                         </TableCell>
                       </TableRow>
                     );
@@ -252,7 +298,7 @@ export default function BookPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={books.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -260,35 +306,7 @@ export default function BookPage() {
           />
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
+      <BookModal open={open} onClose={handleCloseModal} onAddBook={handleAddBook} />
     </>
   );
 }
