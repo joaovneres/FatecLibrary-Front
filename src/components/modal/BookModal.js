@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, TextField, InputAdornment, Grid } from '@mui/material';
+import { Button, Modal, TextField, InputAdornment, Grid, MenuItem } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 
-const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
+const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book, publishers }) => {
   const [id, setId] = useState(0);
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState();
@@ -124,6 +124,7 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
           variant="outlined"
           fullWidth
           margin="normal"
+          required
         />
         <Grid container spacing={2}>
           <Grid item xs={4}>
@@ -138,6 +139,7 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
               InputProps={{
                 inputProps: { min: 0 },
               }}
+              required
             />
           </Grid>
           <Grid item xs={4}>
@@ -147,6 +149,7 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
               onChange={handlePublicationYearChange}
               variant="outlined"
               fullWidth
+              required
               margin="normal"
               type="number"
             />
@@ -158,6 +161,7 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
               onChange={handleEditionChange}
               variant="outlined"
               fullWidth
+              required
               margin="normal"
               type="number"
             />
@@ -170,8 +174,25 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
           onChange={handleImageURLChange}
           variant="outlined"
           fullWidth
+          required
           margin="normal"
         />
+        <TextField
+          label="Editora"
+          select
+          value={publishingId}
+          onChange={(event) => setPublishingId(event.target.value)}
+          variant="outlined"
+          fullWidth
+          required
+          margin="normal"
+        >
+          {publishers.map((publisher) => (
+            <MenuItem key={publisher.id} value={publisher.id}>
+              {publisher.name}
+            </MenuItem>
+          ))}
+        </TextField>
         <div style={{ textAlign: 'right' }}>
           <Button variant="outlined" onClick={onClose} style={{ marginRight: '10px' }}>
             Cancelar

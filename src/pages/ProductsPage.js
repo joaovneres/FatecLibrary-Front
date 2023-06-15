@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover, AppBar, Toolbar, Container, Button } from '@mui/material';
@@ -13,6 +13,7 @@ import PRODUCTS from '../_mock/products';
 import Searchbar from '../layouts/dashboard/header/Searchbar';
 import NotificationsPopover from '../layouts/dashboard/header/NotificationsPopover';
 import AccountPopover from '../layouts/dashboard/header/AccountPopover';
+import { find } from '../service/connectionAPI';
 //
 
 // ----------------------------------------------------------------------
@@ -41,6 +42,17 @@ export default function ProductsPage() {
   const navigate = useNavigate();
 
   const [openFilter, setOpenFilter] = useState(false);
+
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    findBooks();
+    console.log(books)
+  }, [books.length]);
+
+  async function findBooks() {
+    await find('Book', setBooks);
+  }
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -81,7 +93,7 @@ export default function ProductsPage() {
           </Stack>
         </Stack>
 
-        <ProductList products={PRODUCTS} />
+        <ProductList products={books} />
         <ProductCartWidget />
       </Container>
     </>

@@ -25,7 +25,7 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 
-import { find } from '../service/connectionAPI';
+import { find, create, update, remove } from '../service/connectionAPI';
 import DeleteBookModal from '../components/modal/DeleteBookModal';
 import BookModal from '../components/modal/BookModal';
 
@@ -112,7 +112,7 @@ export default function BookPage() {
   };
 
   const handleDeleteBook = (book) => {
-    remove(`Publishing/${book.id}`);
+    remove(`Book/${book.id}`);
     setBooks([]);
     setPublishers([]);
     handleCloseDeleteModal();
@@ -143,14 +143,15 @@ export default function BookPage() {
     setOpen(true);
     setBook(book);
   };
+
   const handleCloseModal = () => {
     setOpen(false);
     setBook('');
   };
 
   const handleOpenDeleteModal = (book) => {
-    setDeletingBook(book);
     setDeleteModalOpen(true);
+    setDeletingBook(book);
   };
 
   const handleCloseDeleteModal = () => {
@@ -266,7 +267,7 @@ export default function BookPage() {
                             </Typography>
                           </Stack>
                         </TableCell>
-                        <TableCell align="center">R${price}</TableCell>
+                        <TableCell align="center">R$ {price}</TableCell>
                         <TableCell align="center">{publicationYear}</TableCell>
                         <TableCell align="center">{edition}</TableCell>
                         <TableCell align="center">
@@ -343,12 +344,13 @@ export default function BookPage() {
         onUpdateBook={handleUpdateBook}
         onAddBook={handleAddBook}
         book={book}
+        publishers={publishers}
       />
       <DeleteBookModal
         open={deleteModalOpen}
         onClose={handleCloseDeleteModal}
         onDeleteBook={handleDeleteBook}
-        book={book}
+        book={deletingBook}
       />
     </>
   );

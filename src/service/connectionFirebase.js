@@ -20,6 +20,21 @@ if (!firebase.apps.lenght) {
   firebase.initializeApp(firebaseConfig);
 }
 
+const db = firebase.firestore();
+
 const provider = new GoogleAuthProvider();
 
-export { firebase, provider };
+async function cadastrarObjeto({publishing}) {
+  try {
+    // Crie um documento com um ID gerado automaticamente
+    await db.collection('publishing').add({
+      acronym: publishing.acronym,
+      name: publishing.name,
+    });
+    console.log('Objeto cadastrado com sucesso!');
+  } catch (error) {
+    console.error('Erro ao cadastrar o objeto:', error);
+  }
+}
+
+export { firebase, provider, cadastrarObjeto };

@@ -7,7 +7,6 @@ import { LoadingButton } from '@mui/lab';
 import { fCurrency } from '../../../utils/formatNumber';
 // components
 import Label from '../../../components/label';
-import { ColorPreview } from '../../../components/color-utils';
 
 // ----------------------------------------------------------------------
 
@@ -26,50 +25,22 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { name, cover, price, status, priceSale } = product;
-
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        {priceSale != null && (
-          <Label
-            variant="filled"
-            color={(priceSale != null && 'error') || 'info'}
-            sx={{
-              zIndex: 9,
-              top: 16,
-              right: 16,
-              position: 'absolute',
-              textTransform: 'uppercase',
-            }}
-          >
-            oferta
-          </Label>
-        )}
-        <StyledProductImg alt={name} src={cover} />
+        <StyledProductImg alt={product.title} src={product.imageURL} />
       </Box>
 
       <Stack spacing={2} sx={{ paddingTop: 4, paddingX: 3 }}>
         <Link color="inherit" underline="hover">
           <Typography variant="subtitle1" noWrap>
-            {name}
+            {product.title} | {product.edition}
           </Typography>
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="subtitle1">
-            <Typography
-              component="span"
-              variant="body1"
-              sx={{
-                color: 'text.disabled',
-                textDecoration: 'line-through',
-              }}
-            >
-              {priceSale && fCurrency(priceSale)}
-            </Typography>
-            &nbsp;
-            {fCurrency(price)}
+            {fCurrency(product.price)}
           </Typography>
         </Stack>
       </Stack>
