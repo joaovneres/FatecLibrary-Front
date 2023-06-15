@@ -12,10 +12,10 @@ import { ColorPreview } from '../../../components/color-utils';
 // ----------------------------------------------------------------------
 
 const StyledProductImg = styled('img')({
-  top: 0,
+  top: 20,
   width: '100%',
   height: '100%',
-  objectFit: 'cover',
+  objectFit: 'contain',
   position: 'absolute',
 });
 
@@ -34,7 +34,7 @@ export default function ShopProductCard({ product }) {
         {priceSale != null && (
           <Label
             variant="filled"
-            color={((priceSale != null) && 'error') || 'info'}
+            color={(priceSale != null && 'error') || 'info'}
             sx={{
               zIndex: 9,
               top: 16,
@@ -49,9 +49,9 @@ export default function ShopProductCard({ product }) {
         <StyledProductImg alt={name} src={cover} />
       </Box>
 
-      <Stack spacing={2} sx={{ p: 3 }}>
+      <Stack spacing={2} sx={{ paddingTop: 4, paddingX: 3 }}>
         <Link color="inherit" underline="hover">
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant="subtitle1" noWrap>
             {name}
           </Typography>
         </Link>
@@ -74,7 +74,7 @@ export default function ShopProductCard({ product }) {
         </Stack>
       </Stack>
       <Box sx={{ p: 2 }}>
-        <LoadingButton fullWidth size="medium" type="submit" variant="contained" color='inherit'>
+        <LoadingButton fullWidth size="medium" type="submit" variant="contained" color="inherit">
           Comprar
         </LoadingButton>
       </Box>

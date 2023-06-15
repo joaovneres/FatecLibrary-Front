@@ -173,11 +173,11 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
           margin="normal"
         />
         <div style={{ textAlign: 'right' }}>
+          <Button variant="outlined" onClick={onClose} style={{ marginRight: '10px' }}>
+            Cancelar
+          </Button>
           <Button variant="contained" onClick={handleAddBook}>
             {book.id ? 'Salvar Alterações' : 'Criar'}
-          </Button>
-          <Button variant="outlined" onClick={onClose} style={{ marginLeft: '10px' }}>
-            Cancelar
           </Button>
         </div>
       </div>
