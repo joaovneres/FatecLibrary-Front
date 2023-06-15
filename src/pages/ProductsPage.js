@@ -69,30 +69,6 @@ export default function ProductsPage() {
       </Helmet>
 
       <Container>
-        <StyledRoot>
-          <StyledToolbar>
-            <Searchbar />
-            <Box sx={{ flexGrow: 1 }} />
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={{
-                xs: 0.5,
-                sm: 1,
-              }}
-            >
-              <Box>
-                <Button variant="contained" onClick={() => navigate("/")}>Home</Button>
-              </Box>
-              <Box>
-                <Button variant="contained" onClick={() => navigate("/cadastrar")}>Cadastar</Button>
-              </Box>
-              <Box>
-                <Button variant="contained" onClick={() => navigate("/login")}>Login</Button>
-              </Box>
-            </Stack>
-          </StyledToolbar>
-        </StyledRoot>
 
         <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>

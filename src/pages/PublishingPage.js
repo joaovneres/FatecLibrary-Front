@@ -23,8 +23,9 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-import { find } from '../service/connectionAPI';
+import { find, create, update, remove } from '../service/connectionAPI';
 import PublisherModal from '../components/modal/PublisherModal';
+import DeletePublishingModal from '../components/modal/DeletePublishingModal';
 
 // ----------------------------------------------------------------------
 
@@ -68,6 +69,10 @@ function applySortFilter(array, comparator, query) {
 export default function PublishingPage() {
   const [open, setOpen] = useState(false);
 
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const [deletingPublishing, setDeletingPublishing] = useState(null);
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -79,6 +84,8 @@ export default function PublishingPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [publishing, setPublishing] = useState('');
 
   const [publishers, setPublishers] = useState([]);
 
@@ -105,6 +112,29 @@ export default function PublishingPage() {
     await find('Publishing', setPublishers);
   }
 
+  const handleAddPublisher = (newPublisher) => {
+    create('Publishing', newPublisher);
+    setBooks([]);
+    setPublishers([]);
+    handleCloseModal();
+  };
+
+  const handleUpdatePublisher = (newPublisher) => {
+    update('Publishing', newPublisher);
+    setBooks([]);
+    setPublishers([]);
+    handleCloseModal();
+  };
+
+  const handleDeletePublisher = (publisher) => {
+    remove(`Publishing/${publisher.id}`);
+    setBooks([]);
+    setPublishers([]);
+    handleCloseDeleteModal();
+  };
+
+  // api
+
   useEffect(() => {
     findBooks();
     findPublishers();
@@ -115,26 +145,29 @@ export default function PublishingPage() {
     findPublishers();
   }, [publishers.length]);
 
-  const handleOpenModal = () => {
+  // modal
+  const handleOpenModal = (publisher) => {
     setOpen(true);
+    setPublishing(publisher);
   };
 
   const handleCloseModal = () => {
     setOpen(false);
+    setPublishing('');
   };
 
-  const handleAddPublisher = (newPublisher) => {
-    // Lógica para adicionar a nova editora (chamada de API, etc.)
-    console.log(newPublisher);
-    handleCloseModal();
+  const handleOpenDeleteModal = (publisher) => {
+    setDeletingPublishing(publisher);
+    setDeleteModalOpen(true);
   };
 
-  const handleUpdatePublisher = (newPublisher) => {
-    // Lógica para adicionar a nova editora (chamada de API, etc.)
-    console.log(newPublisher);
-    handleCloseModal();
+  const handleCloseDeleteModal = () => {
+    setDeletingPublishing(null);
+    setDeleteModalOpen(false);
   };
+  // modal
 
+  //table
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -184,7 +217,7 @@ export default function PublishingPage() {
   const filteredUsers = applySortFilter(publishers, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
-
+  //table
   return (
     <>
       <Helmet>
@@ -241,17 +274,11 @@ export default function PublishingPage() {
                           align="center"
                           sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}
                         >
-                          <MenuItem onClick={handleOpenModal}>
+                          <MenuItem onClick={() => handleOpenModal(row)}>
                             <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
                             Editar
                           </MenuItem>
-                          <PublisherModal
-                            open={open}
-                            onClose={handleCloseModal}
-                            onUpdatePublisher={handleUpdatePublisher}
-                            publisher={row}
-                          />
-                          <MenuItem sx={{ color: 'error.main' }}>
+                          <MenuItem sx={{ color: 'error.main' }} onClick={() => handleOpenDeleteModal(row)}>
                             <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
                             Deletar
                           </MenuItem>
@@ -280,9 +307,8 @@ export default function PublishingPage() {
                           </Typography>
 
                           <Typography variant="body2">
-                            No results found for &nbsp;
+                            Nenhum resultado para &nbsp;
                             <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -304,7 +330,19 @@ export default function PublishingPage() {
           />
         </Card>
       </Container>
-      <PublisherModal open={open} onClose={handleCloseModal} onAddPublisher={handleAddPublisher} />
+      <PublisherModal
+        open={open}
+        onClose={handleCloseModal}
+        onUpdatePublisher={handleUpdatePublisher}
+        onAddPublisher={handleAddPublisher}
+        publisher={publishing}
+      />
+      <DeletePublishingModal
+        open={deleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onDeletePublisher={handleDeletePublisher}
+        publisher={deletingPublishing}
+      />
     </>
   );
 }

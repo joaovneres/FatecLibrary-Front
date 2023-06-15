@@ -26,6 +26,7 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 
 import { find } from '../service/connectionAPI';
+import DeleteBookModal from '../components/modal/DeleteBookModal';
 import BookModal from '../components/modal/BookModal';
 
 // ----------------------------------------------------------------------
@@ -69,8 +70,12 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function PublishingPage() {
+export default function BookPage() {
   const [open, setOpen] = useState(false);
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const [deletingBook, setDeletingBook] = useState(null);
 
   const [page, setPage] = useState(0);
 
@@ -84,11 +89,35 @@ export default function PublishingPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [book, setBook] = useState('');
+
   const [publishers, setPublishers] = useState([]);
 
   const [books, setBooks] = useState([]);
 
   //  Utilizar a API
+
+  const handleAddBook = (newBook) => {
+    create('Book', newBook);
+    setBooks([]);
+    setPublishers([]);
+    handleCloseModal();
+  };
+
+  const handleUpdateBook = (newBook) => {
+    update('Book', newBook);
+    setBooks([]);
+    setPublishers([]);
+    handleCloseModal();
+  };
+
+  const handleDeleteBook = (book) => {
+    remove(`Publishing/${book.id}`);
+    setBooks([]);
+    setPublishers([]);
+    handleCloseDeleteModal();
+  };
+
   async function findBooks() {
     await find('Book', setBooks);
   }
@@ -96,6 +125,8 @@ export default function PublishingPage() {
   async function findPublishers() {
     await find('Publishing', setPublishers);
   }
+
+  // api
 
   useEffect(() => {
     findBooks();
@@ -107,26 +138,29 @@ export default function PublishingPage() {
     findPublishers();
   }, [publishers.length]);
 
-  const handleOpenModal = () => {
+  // modal
+  const handleOpenModal = (book) => {
     setOpen(true);
+    setBook(book);
   };
-
   const handleCloseModal = () => {
     setOpen(false);
+    setBook('');
   };
 
-  const handleAddBook = (newBook) => {
-    // Lógica para adicionar a nova editora (chamada de API, etc.)
-    console.log(newBook);
-    handleCloseModal();
+  const handleOpenDeleteModal = (book) => {
+    setDeletingBook(book);
+    setDeleteModalOpen(true);
   };
 
-  const handleUpdateBook = (newBook) => {
-    // Lógica para adicionar a nova editora (chamada de API, etc.)
-    console.log(newBook);
-    handleCloseModal();
+  const handleCloseDeleteModal = () => {
+    setDeletingBook(null);
+    setDeleteModalOpen(false);
   };
 
+  // modal
+
+  // table
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -176,6 +210,7 @@ export default function PublishingPage() {
   const filteredUsers = applySortFilter(books, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
+  // table
 
   return (
     <>
@@ -246,18 +281,11 @@ export default function PublishingPage() {
                           align="center"
                           sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}
                         >
-                          <MenuItem onClick={handleOpenModal}>
+                          <MenuItem onClick={() => handleOpenModal(row)}>
                             <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
                             Editar
                           </MenuItem>
-                          <BookModal
-                            open={open}
-                            onClose={handleCloseModal}
-                            onUpdateBook={handleUpdateBook}
-                            book={row}
-                          />
-
-                          <MenuItem sx={{ color: 'error.main' }}>
+                          <MenuItem sx={{ color: 'error.main' }} onClick={() => handleOpenDeleteModal(row)}>
                             <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
                             Deletar
                           </MenuItem>
@@ -282,7 +310,7 @@ export default function PublishingPage() {
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            Não encontrado
                           </Typography>
 
                           <Typography variant="body2">
@@ -309,7 +337,19 @@ export default function PublishingPage() {
           />
         </Card>
       </Container>
-      <BookModal open={open} onClose={handleCloseModal} onAddBook={handleAddBook} />
+      <BookModal
+        open={open}
+        onClose={handleCloseModal}
+        onUpdateBook={handleUpdateBook}
+        onAddBook={handleAddBook}
+        book={book}
+      />
+      <DeleteBookModal
+        open={deleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onDeleteBook={handleDeleteBook}
+        book={book}
+      />
     </>
   );
 }

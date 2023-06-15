@@ -1,15 +1,40 @@
-import React, { useState } from 'react';
-import { Button, Modal, TextField, InputAdornment } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
+import { Button, Modal, TextField, InputAdornment, Grid } from '@mui/material';
+import { Add, Remove } from '@mui/icons-material';
 
 const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
+  const [id, setId] = useState(0);
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState();
   const [publicationYear, setPublicationYear] = useState();
   const [edition, setEdition] = useState();
   const [imageURL, setImageURL] = useState('');
   const [publishingId, setPublishingId] = useState('');
+  const [editing, setEditing] = useState(false);
 
+  useEffect(() => {
+    if (book.id) {
+      setId(book.id);
+      setTitle(book.title);
+      setPrice(book.price);
+      setPublicationYear(book.publicationYear);
+      setEdition(book.edition);
+      setImageURL(book.imageURL);
+      setPublishingId(book.publishingId);
+      setEditing(true);
+    } else {
+      setId(0);
+      setTitle('');
+      setPrice();
+      setPublicationYear();
+      setEdition();
+      setImageURL('');
+      setPublishingId('');
+      setEditing(false);
+    }
+  }, [book]);
+
+  // Pegar valores do input
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
@@ -32,8 +57,20 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
     setPublishingId(event.target.value);
   };
 
+  const handleDecrement = (event) => {
+    if (event.target.value > 0) {
+      return event.target.value - 1;
+    }
+  };
+
+  const handleIncrement = (event) => {
+    return event.target.value + 1;
+  };
+  // Pegar valores do input
+
   const handleAddBook = () => {
     const newBook = {
+      id,
       title,
       price,
       publicationYear,
@@ -41,16 +78,16 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
       imageURL,
       publishingId,
     };
-
-    if (book) {
-      onUpdateBook(book.id, newBook);
+    if (editing) {
+      onUpdateBook(newBook);
     } else {
       onAddBook(newBook);
     }
+    setId(0);
     setTitle('');
-    setPrice(0);
-    setPublicationYear(0);
-    setEdition(0);
+    setPrice();
+    setPublicationYear();
+    setEdition();
     setImageURL('');
     setPublishingId('');
   };
@@ -79,7 +116,7 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
           width: '40%',
         }}
       >
-        <h2 style={{ color: '#000' }}>{book ? 'Alterar Livro' : 'Criar Livro'}</h2>
+        <h2 style={{ color: '#000' }}>{book.id ? 'Alterar Livro' : 'Criar Livro'}</h2>
         <TextField
           label="Título"
           value={title}
@@ -88,46 +125,45 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
           fullWidth
           margin="normal"
         />
-        <TextField
-          label="Preço"
-          value={price}
-          onChange={handlePriceChange}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          type="number"
-          InputProps={{
-            inputProps: { min: 0 },
-            endAdornment: (
-              <InputAdornment position="end">
-                <Button
-                  size="small"
-                  onClick={() => (price ? setPrice(price + 1) : setPrice(1))} // Incrementa o valor ao clicar na seta de aumento
-                >
-                  <Add />
-                </Button>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          label="Ano de publicação"
-          value={publicationYear}
-          onChange={handlePublicationYearChange}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          type="number"
-        />
-        <TextField
-          label="Edição"
-          value={edition}
-          onChange={handleEditionChange}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          type="number"
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <TextField
+              label="Preço"
+              value={price}
+              onChange={handlePriceChange}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              type="number"
+              InputProps={{
+                inputProps: { min: 0 },
+              }}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              label="Ano de publicação"
+              value={publicationYear}
+              onChange={handlePublicationYearChange}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              type="number"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
+              label="Edição"
+              value={edition}
+              onChange={handleEditionChange}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              type="number"
+            />
+          </Grid>
+        </Grid>
+
         <TextField
           label="URL da Imagem"
           value={imageURL}
@@ -138,7 +174,7 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book }) => {
         />
         <div style={{ textAlign: 'right' }}>
           <Button variant="contained" onClick={handleAddBook}>
-            {book ? 'Salvar Alterações' : 'Criar'}
+            {book.id ? 'Salvar Alterações' : 'Criar'}
           </Button>
           <Button variant="outlined" onClick={onClose} style={{ marginLeft: '10px' }}>
             Cancelar
