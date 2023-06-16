@@ -23,9 +23,9 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-import { find, create, update, remove } from '../service/connectionAPI';
 import PublisherModal from '../components/modal/PublisherModal';
 import DeletePublishingModal from '../components/modal/DeletePublishingModal';
+import { create, list, remove, update } from '../service/connectionFirebase';
 
 // ----------------------------------------------------------------------
 
@@ -105,29 +105,29 @@ export default function PublishingPage() {
 
   //  Utilizar a API
   async function findBooks() {
-    await find('Book', setBooks);
+    await list('book', setBooks);
   }
 
   async function findPublishers() {
-    await find('Publishing', setPublishers);
+    await list('publishing', setPublishers);
   }
 
   const handleAddPublisher = (newPublisher) => {
-    create('Publishing', newPublisher);
+    create('publishing', newPublisher);
     setBooks([]);
     setPublishers([]);
     handleCloseModal();
   };
 
-  const handleUpdatePublisher = (newPublisher) => {
-    update('Publishing', newPublisher);
+  const handleUpdatePublisher = (newPublisher, id) => {
+    update(id, newPublisher, 'publishing');
     setBooks([]);
     setPublishers([]);
     handleCloseModal();
   };
 
   const handleDeletePublisher = (publisher) => {
-    remove(`Publishing/${publisher.id}`);
+    remove(publisher.id, 'publishing');
     setBooks([]);
     setPublishers([]);
     handleCloseDeleteModal();
@@ -147,8 +147,8 @@ export default function PublishingPage() {
 
   // modal
   const handleOpenModal = (publisher) => {
-    setOpen(true);
     setPublishing(publisher);
+    setOpen(true);
   };
 
   const handleCloseModal = () => {

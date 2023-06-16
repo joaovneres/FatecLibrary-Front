@@ -7,8 +7,7 @@ import { Grid, Container, Typography } from '@mui/material';
 // sections
 import { AppTasks, AppCurrentVisits, AppWidgetSummary } from '../sections/@dashboard/app';
 import { useEffect, useState } from 'react';
-import { find } from '../service/connectionAPI';
-import { firebase } from '../service/connectionFirebase';
+import { list } from '../service/connectionFirebase';
 
 // ----------------------------------------------------------------------
 
@@ -31,36 +30,13 @@ export default function DashboardAppPage() {
   const [publishers, setPublishers] = useState([]);
   const [data, setData] = useState([]);
 
-  // Utilizar o firebase
-  // useEffect(() => {
-  //   const search = async () => {
-  //     const snapshot = await firebase.firestore().collection('book').get();
-  //     const data = [];
-  //     snapshot.forEach((doc) => {
-  //       const { edition, imageURL, price, publicationYear, publishing, title } = doc.data();
-  //       data.push({
-  //         key: doc.id,
-  //         doc,
-  //         edition,
-  //         imageURL,
-  //         price,
-  //         publicationYear,
-  //         publishing,
-  //         title,
-  //       });
-  //     });
-  //     setBooks(data.reverse());
-  //   };
-  //   search();
-  // }, []);
-
   //  Utilizar a API
   async function findBooks() {
-    await find('Book', setBooks);
+    await list('book', setBooks);
   }
 
   async function findPublishers() {
-    await find('Publishing', setPublishers);
+    await list('publishing', setPublishers);
     setData(
       publishers.map((publishing) => {
         return { label: publishing.name, value: countOccurrences(publishing.id) };

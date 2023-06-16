@@ -2,18 +2,26 @@ import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover, AppBar, Toolbar, Container, Button } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Typography,
+  Stack,
+  MenuItem,
+  Avatar,
+  IconButton,
+  Popover,
+  AppBar,
+  Toolbar,
+  Container,
+  Button,
+} from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 // utils
 import { bgBlur } from '../utils/cssStyles';
 // components
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
-// mock
-import PRODUCTS from '../_mock/products';
-import Searchbar from '../layouts/dashboard/header/Searchbar';
-import NotificationsPopover from '../layouts/dashboard/header/NotificationsPopover';
-import AccountPopover from '../layouts/dashboard/header/AccountPopover';
-import { find } from '../service/connectionAPI';
+import { list } from '../service/connectionFirebase';
 //
 
 // ----------------------------------------------------------------------
@@ -25,7 +33,7 @@ const StyledRoot = styled(AppBar)(({ theme }) => ({
   ...bgBlur({ color: theme.palette.background.default }),
   boxShadow: 'none',
   [theme.breakpoints.up('lg')]: {
-    width: "100%",
+    width: '100%',
   },
 }));
 
@@ -37,7 +45,6 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
-
 export default function ProductsPage() {
   const navigate = useNavigate();
 
@@ -47,11 +54,10 @@ export default function ProductsPage() {
 
   useEffect(() => {
     findBooks();
-    console.log(books)
   }, [books.length]);
 
   async function findBooks() {
-    await find('Book', setBooks);
+    await list('book', setBooks);
   }
 
   const handleOpenFilter = () => {
@@ -81,7 +87,6 @@ export default function ProductsPage() {
       </Helmet>
 
       <Container>
-
         <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
             <ProductFilterSidebar

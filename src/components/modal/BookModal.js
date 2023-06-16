@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, TextField, InputAdornment, Grid, MenuItem } from '@mui/material';
-import { Add, Remove } from '@mui/icons-material';
+import { Button, Modal, TextField, Grid, MenuItem } from '@mui/material';
 
 const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book, publishers }) => {
-  const [id, setId] = useState(0);
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState();
   const [publicationYear, setPublicationYear] = useState();
@@ -14,7 +12,6 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book, publishers })
 
   useEffect(() => {
     if (book.id) {
-      setId(book.id);
       setTitle(book.title);
       setPrice(book.price);
       setPublicationYear(book.publicationYear);
@@ -23,7 +20,6 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book, publishers })
       setPublishingId(book.publishingId);
       setEditing(true);
     } else {
-      setId(0);
       setTitle('');
       setPrice();
       setPublicationYear();
@@ -53,24 +49,10 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book, publishers })
     setImageURL(event.target.value);
   };
 
-  const handlePublishingIdChange = (event) => {
-    setPublishingId(event.target.value);
-  };
-
-  const handleDecrement = (event) => {
-    if (event.target.value > 0) {
-      return event.target.value - 1;
-    }
-  };
-
-  const handleIncrement = (event) => {
-    return event.target.value + 1;
-  };
   // Pegar valores do input
 
   const handleAddBook = () => {
     const newBook = {
-      id,
       title,
       price,
       publicationYear,
@@ -79,11 +61,10 @@ const BookModal = ({ open, onClose, onAddBook, onUpdateBook, book, publishers })
       publishingId,
     };
     if (editing) {
-      onUpdateBook(newBook);
+      onUpdateBook(newBook, book.id);
     } else {
       onAddBook(newBook);
     }
-    setId(0);
     setTitle('');
     setPrice();
     setPublicationYear();

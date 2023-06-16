@@ -2,19 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal, TextField } from '@mui/material';
 
 const PublisherModal = ({ open, onClose, onAddPublisher, onUpdatePublisher, publisher }) => {
-  const [id, setId] = useState(0);
   const [name, setName] = useState('');
   const [acronym, setAcronym] = useState('');
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     if (publisher.id) {
-      setId(publisher.id);
       setName(publisher.name);
       setAcronym(publisher.acronym);
       setEditing(true);
     } else {
-      setId(0);
       setName('');
       setAcronym('');
       setEditing(false);
@@ -33,16 +30,14 @@ const PublisherModal = ({ open, onClose, onAddPublisher, onUpdatePublisher, publ
 
   const handleAddPublisher = () => {
     const newPublisher = {
-      id,
       name,
       acronym,
     };
     if (editing) {
-      onUpdatePublisher(newPublisher);
+      onUpdatePublisher(newPublisher, publisher.id);
     } else {
       onAddPublisher(newPublisher);
     }
-    setId(0);
     setName('');
     setAcronym('');
   };

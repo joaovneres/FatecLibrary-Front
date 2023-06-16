@@ -24,10 +24,9 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-
-import { find, create, update, remove } from '../service/connectionAPI';
 import DeleteBookModal from '../components/modal/DeleteBookModal';
 import BookModal from '../components/modal/BookModal';
+import { list, create, update, remove } from '../service/connectionFirebase';
 
 // ----------------------------------------------------------------------
 
@@ -98,32 +97,32 @@ export default function BookPage() {
   //  Utilizar a API
 
   const handleAddBook = (newBook) => {
-    create('Book', newBook);
+    create('book', newBook);
     setBooks([]);
     setPublishers([]);
     handleCloseModal();
   };
 
-  const handleUpdateBook = (newBook) => {
-    update('Book', newBook);
+  const handleUpdateBook = (newBook, id) => {
+    update(id, newBook, 'book');
     setBooks([]);
     setPublishers([]);
     handleCloseModal();
   };
 
   const handleDeleteBook = (book) => {
-    remove(`Book/${book.id}`);
+    remove(book.id, 'book');
     setBooks([]);
     setPublishers([]);
     handleCloseDeleteModal();
   };
 
   async function findBooks() {
-    await find('Book', setBooks);
+    await list('book', setBooks);
   }
 
   async function findPublishers() {
-    await find('Publishing', setPublishers);
+    await list('publishing', setPublishers);
   }
 
   // api
@@ -140,8 +139,8 @@ export default function BookPage() {
 
   // modal
   const handleOpenModal = (book) => {
-    setOpen(true);
     setBook(book);
+    setOpen(true);
   };
 
   const handleCloseModal = () => {
@@ -150,8 +149,8 @@ export default function BookPage() {
   };
 
   const handleOpenDeleteModal = (book) => {
-    setDeleteModalOpen(true);
     setDeletingBook(book);
+    setDeleteModalOpen(true);
   };
 
   const handleCloseDeleteModal = () => {
