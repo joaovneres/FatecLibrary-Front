@@ -1,53 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 // @mui
-import {
-  Box,
-  Divider,
-  Typography,
-  Stack,
-  MenuItem,
-  Avatar,
-  IconButton,
-  Popover,
-  AppBar,
-  Toolbar,
-  Container,
-  Button,
-} from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
-// utils
-import { bgBlur } from '../utils/cssStyles';
+import { Stack, Container } from '@mui/material';
 // components
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
 import { list } from '../service/connectionFirebase';
 //
 
 // ----------------------------------------------------------------------
-const HEADER_MOBILE = 64;
-
-const HEADER_DESKTOP = 92;
-
-const StyledRoot = styled(AppBar)(({ theme }) => ({
-  ...bgBlur({ color: theme.palette.background.default }),
-  boxShadow: 'none',
-  [theme.breakpoints.up('lg')]: {
-    width: '100%',
-  },
-}));
-
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  minHeight: HEADER_MOBILE,
-  [theme.breakpoints.up('lg')]: {
-    minHeight: HEADER_DESKTOP,
-    padding: theme.spacing(0, 5),
-  },
-}));
 
 export default function ProductsPage() {
-  const navigate = useNavigate();
-
   const [openFilter, setOpenFilter] = useState(false);
 
   const [books, setBooks] = useState([]);
